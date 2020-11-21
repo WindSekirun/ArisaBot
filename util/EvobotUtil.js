@@ -3,7 +3,6 @@ exports.canModifyQueue = (member) => {
   const botChannel = member.guild.voice.channelID;
 
   if (channelID !== botChannel) {
-    member.send("You need to join the voice channel first!").catch(console.error);
     return;
   }
 
@@ -24,4 +23,5 @@ exports.YOUTUBE_API_KEY = config ? config.YOUTUBE_API_KEY : process.env.YOUTUBE_
 exports.SOUNDCLOUD_CLIENT_ID = config ? config.SOUNDCLOUD_CLIENT_ID : process.env.SOUNDCLOUD_CLIENT_ID;
 exports.MAX_PLAYLIST_SIZE = config ? config.MAX_PLAYLIST_SIZE : process.env.MAX_PLAYLIST_SIZE;
 exports.PRUNING = config ? config.PRUNING : process.env.PRUNING;
+exports.LOCALE = config ? config.LOCALE : process.env.LOCALE;
 exports.STAY_TIME = config ? config.STAY_TIME : process.env.STAY_TIME;
