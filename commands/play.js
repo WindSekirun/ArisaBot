@@ -100,7 +100,7 @@ module.exports = {
 
     if (serverQueue) {
       serverQueue.songs.push(song);
-      return serverQueue.textChannel
+      return message.channel
         .send(i18n.__mf("play.queueAdded", { title: song.title, author: message.author }))
         .catch(console.error);
     }

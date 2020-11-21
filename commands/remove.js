@@ -17,6 +17,6 @@ module.exports = {
       return message.reply(i18n.__mf("remove.usageReply", { prefix: message.client.prefix }));
 
     const song = queue.songs.splice(args[0] - 1, 1);
-    queue.textChannel.send(i18n.__mf("remove.result", { author: message.author, title: song[0].title }));
+    message.channel.send(i18n.__mf("remove.result", { author: message.author, title: song[0].title }));
   }
 };
