@@ -1,4 +1,4 @@
-const ytdlDiscord = require("ytdl-core-discord");
+const ytdl = require("discord-ytdl-core");
 const scdl = require("soundcloud-downloader");
 
 const { canModifyQueue, LOCALE, STAY_TIME } = require("../util/EvobotUtil");
@@ -27,7 +27,12 @@ module.exports = {
 
     try {
       if (song.url.includes("youtube.com")) {
-        stream = await ytdlDiscord(song.url, { highWaterMark: 1 << 25 });
+        stream = await ytdl(song.url, {
+          highWaterMark: 1 << 25,
+          filter: "audioonly",
+          opusEncoded: true,
+          // encoderArgs: ["-af", "bass=g=10,dynaudnorm=f=200"]
+        });
       } else if (song.url.includes("soundcloud.com")) {
         try {
           stream = await scdl.downloadFormat(song.url, scdl.FORMATS.OPUS, SOUNDCLOUD_CLIENT_ID);
