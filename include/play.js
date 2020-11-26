@@ -1,9 +1,13 @@
 const ytdlDiscord = require("ytdl-core-discord");
 const scdl = require("soundcloud-downloader");
+<<<<<<< HEAD
 const { canModifyQueue, LOCALE, STAY_TIME } = require("../util/EvobotUtil");
 const i18n = require("i18n");
 
 i18n.setLocale(LOCALE);
+=======
+const { canModifyQueue, STAY_TIME } = require("../util/EvobotUtil");
+>>>>>>> master
 
 module.exports = {
   async play(song, message) {
@@ -13,12 +17,11 @@ module.exports = {
 
     if (!song) {
       setTimeout(function () {
-        if (!queue.connection.dispatcher && message.guild.me.voice.channel) {
-          queue.channel.leave();
-          queue.textChannel.send("I have left the channel. See you again.").catch(console.error);
-        } else return;
-      }, STAY_TIME);
-      queue.textChannel.send(i18n.__("play.queueEnded")).catch(console.error);
+        if (queue.connection.dispatcher && message.guild.me.voice.channel) return;
+        queue.channel.leave();
+        queue.textChannel.send("Leaving voice channel...");
+      }, STAY_TIME * 1000);
+      queue.textChannel.send("❌ Music queue ended.").catch(console.error);
       return message.client.queue.delete(message.guild.id);
     }
 
@@ -195,7 +198,11 @@ module.exports = {
 
     collector.on("end", () => {
       playingMessage.reactions.removeAll().catch(console.error);
+<<<<<<< HEAD
       if (PRUNING === true || (PRUNING == "true" && playingMessage && !playingMessage.deleted)) {
+=======
+      if (PRUNING == "true" && playingMessage && !playingMessage.deleted) {
+>>>>>>> master
         playingMessage.delete({ timeout: 3000 }).catch(console.error);
       }
     });
