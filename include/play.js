@@ -20,15 +20,15 @@ module.exports = {
 
     const queue = message.client.queue.get(message.guild.id);
 
-     if (!song) {
-          setTimeout(function () {
-            if (queue.connection.dispatcher && message.guild.me.voice.channel) return;
-            queue.channel.leave();
-            queue.textChannel.send(i18n.__("play.leaveChannel"));
-          }, STAY_TIME * 1000);
-          queue.textChannel.send(i18n.__("play.queueEnded")).catch(console.error);
-          return message.client.queue.delete(message.guild.id);
-        }
+    if (!song) {
+      setTimeout(function () {
+        if (queue.connection.dispatcher && message.guild.me.voice.channel) return;
+        queue.channel.leave();
+        queue.textChannel.send(i18n.__("play.leaveChannel"));
+      }, STAY_TIME * 1000);
+      queue.textChannel.send(i18n.__("play.queueEnded")).catch(console.error);
+      return message.client.queue.delete(message.guild.id);
+    }
 
     let stream = null;
     let streamType = song.url.includes("youtube.com") ? "opus" : "ogg/opus";
@@ -38,7 +38,7 @@ module.exports = {
         stream = await ytdl(song.url, {
           highWaterMark: 1 << 25,
           filter: "audioonly",
-          opusEncoded: true,
+          opusEncoded: true
           // encoderArgs: ["-af", "bass=g=10,dynaudnorm=f=200"]
         });
       } else if (song.url.includes("soundcloud.com")) {
