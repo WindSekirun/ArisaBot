@@ -1,9 +1,7 @@
 const ytdl = require("discord-ytdl-core");
 const scdl = require("soundcloud-downloader");
-
-const { canModifyQueue, LOCALE, STAY_TIME } = require("../util/EvobotUtil");
+const { canModifyQueue, STAY_TIME, LOCALE } = require("../util/EvobotUtil");
 const i18n = require("i18n");
-
 i18n.setLocale(LOCALE);
 
 module.exports = {
@@ -22,10 +20,15 @@ module.exports = {
 
     const queue = message.client.queue.get(message.guild.id);
 
-    if (!song) {
-      queue.textChannel.send(i18n.__("play.queueEnded")).catch(console.error);
-      return message.client.queue.delete(message.guild.id);
-    }
+     if (!song) {
+          setTimeout(function () {
+            if (queue.connection.dispatcher && message.guild.me.voice.channel) return;
+            queue.channel.leave();
+            queue.textChannel.send(i18n.__("play.leaveChannel"));
+          }, STAY_TIME * 1000);
+          queue.textChannel.send(i18n.__("play.queueEnded")).catch(console.error);
+          return message.client.queue.delete(message.guild.id);
+        }
 
     let stream = null;
     let streamType = song.url.includes("youtube.com") ? "opus" : "ogg/opus";
