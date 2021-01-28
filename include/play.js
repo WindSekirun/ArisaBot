@@ -24,9 +24,9 @@ module.exports = {
       setTimeout(function () {
         if (queue.connection.dispatcher && message.guild.me.voice.channel) return;
         queue.channel.leave();
-        queue.textChannel.send(i18n.__("play.leaveChannel"));
+        message.channel.send(i18n.__("play.leaveChannel"));
       }, STAY_TIME * 1000);
-      queue.textChannel.send(i18n.__("play.queueEnded")).catch(console.error);
+      message.channel.send(i18n.__("play.queueEnded")).catch(console.error);
       return message.client.queue.delete(message.guild.id);
     }
 
@@ -88,7 +88,7 @@ module.exports = {
     dispatcher.setVolumeLogarithmic(queue.volume / 100);
 
     try {
-      var playingMessage = await queue.textChannel.send(
+      var playingMessage = await  message.channel.send(
         i18n.__mf("play.startedPlaying", { title: song.title, url: song.url })
       );
       await playingMessage.react("⏭");
@@ -117,7 +117,7 @@ module.exports = {
           reaction.users.remove(user).catch(console.error);
           if (!canModifyQueue(member)) return i18n.__("common.errorNotChannel");
           queue.connection.dispatcher.end();
-          queue.textChannel.send(i18n.__mf("play.skipSong", { author: user })).catch(console.error);
+          message.channel.send(i18n.__mf("play.skipSong", { author: user })).catch(console.error);
           collector.stop();
           break;
 
@@ -127,11 +127,11 @@ module.exports = {
           if (queue.playing) {
             queue.playing = !queue.playing;
             queue.connection.dispatcher.pause(true);
-            queue.textChannel.send(i18n.__mf("play.pauseSong", { author: user })).catch(console.error);
+            message.channel.send(i18n.__mf("play.pauseSong", { author: user })).catch(console.error);
           } else {
             queue.playing = !queue.playing;
             queue.connection.dispatcher.resume();
-            queue.textChannel.send(i18n.__mf("play.resumeSong", { author: user })).catch(console.error);
+            message.channel.send(i18n.__mf("play.resumeSong", { author: user })).catch(console.error);
           }
           break;
 
@@ -141,11 +141,11 @@ module.exports = {
           if (queue.volume <= 0) {
             queue.volume = 100;
             queue.connection.dispatcher.setVolumeLogarithmic(100 / 100);
-            queue.textChannel.send(i18n.__mf("play.unmutedSong", { author: user })).catch(console.error);
+            message.channel.send(i18n.__mf("play.unmutedSong", { author: user })).catch(console.error);
           } else {
             queue.volume = 0;
             queue.connection.dispatcher.setVolumeLogarithmic(0);
-            queue.textChannel.send(i18n.__mf("play.mutedSong", { author: user })).catch(console.error);
+            message.channel.send(i18n.__mf("play.mutedSong", { author: user })).catch(console.error);
           }
           break;
 
@@ -156,7 +156,7 @@ module.exports = {
           if (queue.volume - 10 <= 0) queue.volume = 0;
           else queue.volume = queue.volume - 10;
           queue.connection.dispatcher.setVolumeLogarithmic(queue.volume / 100);
-          queue.textChannel
+          message.channel
             .send(i18n.__mf("play.decreasedVolume", { author: user, volume: queue.volume }))
             .catch(console.error);
           break;
@@ -168,7 +168,7 @@ module.exports = {
           if (queue.volume + 10 >= 100) queue.volume = 100;
           else queue.volume = queue.volume + 10;
           queue.connection.dispatcher.setVolumeLogarithmic(queue.volume / 100);
-          queue.textChannel
+          message.channel
             .send(i18n.__mf("play.increasedVolume", { author: user, volume: queue.volume }))
             .catch(console.error);
           break;
@@ -177,7 +177,7 @@ module.exports = {
           reaction.users.remove(user).catch(console.error);
           if (!canModifyQueue(member)) return i18n.__("common.errorNotChannel");
           queue.loop = !queue.loop;
-          queue.textChannel
+          message.channel
             .send(
               i18n.__mf("play.loopSong", {
                 author: user,
@@ -191,7 +191,7 @@ module.exports = {
           reaction.users.remove(user).catch(console.error);
           if (!canModifyQueue(member)) return i18n.__("common.errorNotChannel");
           queue.songs = [];
-          queue.textChannel.send(i18n.__mf("play.stopSong", { author: user })).catch(console.error);
+          message.channel.send(i18n.__mf("play.stopSong", { author: user })).catch(console.error);
           try {
             queue.connection.dispatcher.end();
           } catch (error) {

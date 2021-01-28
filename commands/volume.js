@@ -21,6 +21,6 @@ module.exports = {
 
     queue.volume = args[0];
     queue.connection.dispatcher.setVolumeLogarithmic(args[0] / 100);
-    return queue.textChannel.send(i18n.__mf("volume.result", { arg: args[0] })).catch(console.error);
+    return  message.channel.send(i18n.__mf("volume.result", { arg: args[0] })).catch(console.error);
   }
 };

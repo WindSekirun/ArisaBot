@@ -18,6 +18,6 @@ module.exports = {
     }
     queue.songs = songs;
     message.client.queue.set(message.guild.id, queue);
-    queue.textChannel.send(i18n.__mf('shuffle.result', {author: message.author})).catch(console.error);
+    message.channel.send(i18n.__mf('shuffle.result', {author: message.author})).catch(console.error);
   }
 };
