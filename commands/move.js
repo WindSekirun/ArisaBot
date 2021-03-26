@@ -20,7 +20,7 @@ module.exports = {
     let song = queue.songs[args[0] - 1];
 
     queue.songs = move(queue.songs, args[0] - 1, args[1] == 1 ? 1 : args[1] - 1);
-    queue.textChannel.send(
+    message.channel.send(
       i18n.__mf("move.result", {
         author: message.author,
         title: song.title,
